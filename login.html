@@ -1,64 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#4f46e5" />
-    <title>Login • Personal Document Vault</title>
-    <link rel="icon" href="images/favicon.jpg" type="image/jpeg" />
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body class="login-page">
-    <main class="auth-shell login-shell">
-      <section class="login-card card">
-        <div class="login-card-grid">
-          <div class="login-copy">
-            <p class="eyebrow">Welcome back</p>
-            <h1>Secure document access</h1>
-            <p class="subtext">Log in to your Personal Document Vault and keep your most important files safe.</p>
-            <form class="login-form" onsubmit="handleLogin(event)">
-              <label>Username</label>
-              <input id="username" required placeholder="Enter username" autocomplete="username" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#6366f1" />
+  <title>Login • Document Vault</title>
+  <link rel="icon" href="images/favicon.jpg" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="login-page">
 
-              <label>Password</label>
-              <input id="password" type="password" required placeholder="Enter password" autocomplete="current-password" />
+  <div class="login-box">
+    <!-- Logo -->
+    <div class="login-logo">
+      <div class="icon">🔐</div>
+      <h1>Document Vault</h1>
+      <p>Your personal secure document space</p>
+    </div>
 
-              <p id="error-msg" class="error" style="display:none;">Invalid username or password.</p>
+    <!-- Card -->
+    <div class="card login-form-card">
+      <div id="error-msg" class="error-msg">Invalid username or password.</div>
 
-              <button type="submit">Login</button>
-            </form>
-          </div>
-          <div class="login-banner">
-            <img src="images/login.jpg" alt="Login image" />
-          </div>
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label" for="username">Username</label>
+          <input class="input" id="username" type="text" required placeholder="Enter your username" autocomplete="username" />
         </div>
-      </section>
-    </main>
 
-    <script>
-      // Redirect if already logged in
-      if (sessionStorage.getItem('vault_auth') === 'true') {
-        window.location.href = 'dashboard.html';
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <input class="input" id="password" type="password" required placeholder="Enter your password" autocomplete="current-password" />
+        </div>
+
+        <button type="submit" class="btn btn-primary login-submit">Login →</button>
+      </form>
+    </div>
+
+    <p class="login-footer">Protected vault • Access restricted</p>
+  </div>
+
+  <script>
+    // Already logged in? Redirect
+    if (sessionStorage.getItem('vault_auth') === 'true') {
+      location.href = 'dashboard.html';
+    }
+
+    // Saved theme
+    const t = localStorage.getItem('vault_theme');
+    if (t) document.documentElement.setAttribute('data-theme', t);
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value;
+
+      // ── Credentials ── change these if needed ──
+      const VALID_USER = 'satyam02';
+      const VALID_PASS = 'Muskan!0202';
+      // ───────────────────────────────────────────
+
+      if (user === VALID_USER && pass === VALID_PASS) {
+        sessionStorage.setItem('vault_auth', 'true');
+        sessionStorage.setItem('vault_user', user);
+        location.href = 'dashboard.html';
+      } else {
+        const err = document.getElementById('error-msg');
+        err.style.display = 'block';
+        setTimeout(() => err.style.display = 'none', 3000);
       }
-
-      function handleLogin(e) {
-        e.preventDefault();
-        const username = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value;
-        const errorMsg = document.getElementById('error-msg');
-
-        // Credentials check — change these values as needed
-        const VALID_USER = 'satyam02';
-        const VALID_PASS = 'Muskan!0202';
-
-        if (username === VALID_USER && password === VALID_PASS) {
-          sessionStorage.setItem('vault_auth', 'true');
-          sessionStorage.setItem('vault_user', username);
-          window.location.href = 'dashboard.html';
-        } else {
-          errorMsg.style.display = 'block';
-        }
-      }
-    </script>
-  </body>
+    }
+  </script>
+</body>
 </html>
